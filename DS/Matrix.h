@@ -85,14 +85,13 @@ namespace MyLib {
 			return size2;
 		}
 
-		/*string ToString();
+		/*string ToString();*/
 		Matrix Reshape(int s1, int s2);
-		Matrix Reshape(int s1, int s2)const;*/
+		Matrix Reshape(int s1, int s2)const;
 
 		static Matrix dot(const Matrix &A, const Matrix &B);
 		
 		
-		/*static template<class MType> Matrix<class MType> dot(const Matrix &A, const Matrix &B);*/
 		Matrix dot(const Matrix<MType> &B);
 	};
 
@@ -286,6 +285,50 @@ namespace MyLib {
 		return cuted;
 	}
 
+
+	template<class MType> Matrix<MType> Matrix<MType>::Reshape(int s1, int s2) {
+		Matrix C(s1, s2);
+	
+		int *a = new int[size1 * size2];
+	
+		for (int i = 0; i < size1; i++) {
+			for (int j = 0; j < size2; j++) {
+				a[i * size2 + j] = arr[i][j];
+			}
+		}
+	
+		for (int i = 0; i < s1; i++) {
+			for (int j = 0; j < s2; j++) {
+				C[i][j] = a[i * s2 + j];
+			}
+		}
+	
+		delete[]a;
+	
+		return C;
+	}
+
+	template<class MType> Matrix<MType> Matrix<MType>::Reshape(int s1, int s2)const {
+		Matrix C(s1, s2);
+	
+		int *a = new int[size1 * size2];
+	
+		for (int i = 0; i < size1; i++) {
+			for (int j = 0; j < size2; j++) {
+				a[i * size2 + j] = arr[i][j];
+			}
+		}
+	
+		for (int i = 0; i < s1; i++) {
+			for (int j = 0; j < s2; j++) {
+				C[i][j] = a[i * s2 + j];
+			}
+		}
+	
+		delete[]a;
+	
+		return C;
+	}
 
 	/*std::once_flag Matrix<class MType>::initRand;*/
 }
