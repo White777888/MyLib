@@ -611,11 +611,8 @@ namespace MyLib {
 
 			return C;
 		}
-		/*template<class MType> Matrix<MType> Matrix<MType>::operator=(const Matrix &m)const {
-
-		}*/
-
-		
 	}
+
+
 	template<class MType> std::once_flag Matrix<MType>::initRand;
 }
