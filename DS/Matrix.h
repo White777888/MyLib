@@ -5,9 +5,13 @@
 #include <ctime>
 #include <mutex>
 
+#include "XExecption.h"
+
 using namespace std;
 
 namespace MyLib {
+
+	//Структура, определяющая 2d точку
 	struct Point {
 		int x, y;
 	};
@@ -27,7 +31,7 @@ namespace MyLib {
 			delete[]arr;
 		}
 
-		////Функция умножения матриц методом Штрассена
+		//Функция умножения матриц методом Штрассена
 		Matrix MultMatrixRecurse(const Matrix &A, const Matrix &B);
 
 		//Флаг для однократной инициализации генератора случ. чисел
@@ -40,37 +44,59 @@ namespace MyLib {
 		Matrix(int s1, int s2);
 		Matrix(const Matrix &m);
 
+		//Десруктор
 		~Matrix();
 
 
-
+		//Перегруженные операторы [] для доступа к массиву
+		//Для модифицируемых матриц
 		MType* operator[](const int i) {
+			//Проверка на выход за границы
+			if (i < 0 || i >= size1) {
+				throw XExecption("out of band");
+			}
 			return arr[i];
 		}
-		const MType* operator[](const int i) const {
-			return arr[i];
-		}
-		Matrix operator=(const Matrix &m);
-		/*Matrix operator=(const Matrix &m)const;*/
 
+		//Для const матриц
+		const MType* operator[](const int i) const {
+			//Проверка на выход за границы
+			if (i < 0 || i >= size1) {
+				throw XExecption("out of band");
+			}
+			return arr[i];
+		}
+
+		//Перегруженные операторы
+		Matrix operator=(const Matrix &m);
 		Matrix operator+(Matrix B);
 		Matrix operator-(Matrix B);
-
 		Matrix operator*(const Matrix &B);
 		bool operator==(const Matrix &B);
 
+		//Функции вывода матрицы
 		void print();
 		void print()const;
+
+		//Функции заполнения матрицы
 		void fill(int limit = 10, int offset = 0);
 
+
+		/*Функция для выделения части матрицы*/
+		//Функция с числовыми параметрами
 		const Matrix Cut(int x1, int y1, int x2, int y2) const;
+		
+		//Функция с параметрами-точками
 		Matrix<MType> Cut(Point left_up, Point right_down);
 
+		//Функция вставки в матрицу другой матрицы
 		Matrix Insert(const Matrix &Inp, int x1, int y1, int x2, int y2);
 
+		//Функция расширения матрицы
 		Matrix ExpandTo(int rows, int cols);
 		Matrix ExpandTo(int rows, int cols) const;
 
+		/*Функции проверки матрицы на пустоту*/
 		bool IsEmpty() {
 			return size1 == 0 || size2 == 0;
 		}
@@ -78,6 +104,7 @@ namespace MyLib {
 			return size1 == 0 || size2 == 0;
 		}
 
+		/*Функции доступа к размерам матрицы*/
 		int getS1() {
 			return size1;
 		}
@@ -85,13 +112,17 @@ namespace MyLib {
 			return size2;
 		}
 
+		/*Функция приведения матрицы к строке*/
 		string ToString();
+
+		/*Функции изменения формы матрицы*/
 		Matrix Reshape(int s1, int s2);
 		Matrix Reshape(int s1, int s2)const;
 
+		/*Статическая функция перемножения матриц простым способом*/
 		static Matrix dot(const Matrix &A, const Matrix &B);
 
-
+		/*Функция-член для перемножения матриц*/
 		Matrix dot(const Matrix<MType> &B);
 	};
 
