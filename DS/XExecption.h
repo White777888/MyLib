@@ -12,5 +12,10 @@ namespace MyLib {
 		XExecption();
 		XExecption(string err);
 		~XExecption();
+
+		//Получение ошибки
+		string getError() {
+			return error;
+		}
 	};
 }
