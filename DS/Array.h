@@ -1,5 +1,7 @@
 #pragma once
-#include "XExecption.h"
+#include <iostream>
+#include <ostream>
+#include "Exception.h"
 
 using namespace std;
 
@@ -32,12 +34,23 @@ namespace MyLib {
 			return length;
 		}
 
+		//Оператор индексации массива
 		AType& operator[](long i) {
 
 			//В случае выхода за границы
 			//выбрасываем исключение
 			if (i < 0 || i >= length) {
-				throw XExecption("Index was out of array's border");
+				throw Exception("Index was out of array's border");
+			}
+
+			return arr[i];
+		}
+		AType& operator[](long i)const {
+
+			//В случае выхода за границы
+			//выбрасываем исключение
+			if (i < 0 || i >= length) {
+				throw Exception("Index was out of array's border");
 			}
 
 			return arr[i];
@@ -45,6 +58,25 @@ namespace MyLib {
 
 		//Перегруженный оператор присваивания
 		Array operator=(const Array &a);
+
+		//Функция изменения размера
+		void resize(long newsize);
+
+		//Оператор вывода массива в потоке вывода
+		template<typename AType> friend ostream& operator<<(ostream &stream, const Array<AType> &A);
+
+		//Математические операторы с массивом
+		//+ объект
+		template<typename VType> Array<AType> operator+(VType val);
+		//+ Array
+		Array operator+(const Array &A);
+		//Объект + Array 
+		template<typename AType, typename VType> friend Array<VType> operator+(VType val, const Array<AType> &A);
+
+
+		//Логические операторы с массивом
+
+		//Функция сортировки
 
 	};
 
@@ -92,4 +124,102 @@ namespace MyLib {
 
 		return *this;
 	}
+
+	template<typename AType> void Array<AType>::resize(long newsize) {
+		
+		//Новый массив
+		AType *narr = new AType[newsize];
+
+		//Копирование старого массива
+		for (int i = 0; i < newsize && i < length; i++) {
+			narr[i] = arr[i];
+		}
+
+		//Удаление старого массива
+		delete[]arr;
+
+		//Запоминание нового массива
+		arr = narr;
+
+		//Запоминаем новый размер
+		length = newsize;
+
+	}
+
+	template<typename AType> ostream& operator<<(ostream &stream, const Array<AType> &A) {
+
+		cout << '[';
+		
+		for (int i = 0; i < A.length; i++) {
+
+			cout << A[i] 
+				/*Если выводится последний элемент,
+				то ничего не выводим, в обр. случае
+				выводим запятую и пробел*/
+				<< ((i == A.length - 1)? "" : ", ");
+		}
+
+		cout << "]\n";
+
+		return stream;
+
+	}
+
+	template<typename AType>
+	template<typename VType>
+	Array<AType> Array<AType>::operator+(VType val)
+	{
+		Array temp = *this;
+
+		//Прибавляем значение ко всем элементам
+		for (long i = 0; i < temp.length; i++) {
+			temp.arr[i] += val;
+		}
+
+		return temp;
+	}
+
+	template<typename AType>
+	Array<AType> Array<AType>::operator+(const Array & A)
+	{
+		//Новый массив
+		Array temp(length + A.length);
+
+		//Общий указатель на массивы и длина
+		AType *temparr = arr;
+		long l = length;
+
+		//Соединяем массивы в новом
+		for (long i = 0, j = 0; i < temp.length; i++, j++) {
+			
+			/*Когда закончим с одним масивом
+			перейдем к другому*/
+			if (j == l) {
+				j = 0;
+				temparr = A.arr;
+				l = A.length;
+			}
+
+			temp.arr[i] = temparr[j];
+			
+			
+		}
+
+		return temp;
+	}
+
+	template<typename AType, typename VType>
+	Array<VType> operator+(VType val, const Array<AType> &A) {
+
+		Array<VType> temp(A.length);
+
+		//Складываем элементы массива A и значение val
+		for (long i = 0; i < temp.length; i++) {
+			temp.arr[i] = (VType)A.arr[i] + val;
+		}
+
+		return temp;
+	}
+
+	
 }

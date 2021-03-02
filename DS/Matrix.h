@@ -5,7 +5,7 @@
 #include <ctime>
 #include <mutex>
 
-#include "XExecption.h"
+#include "Exception.h"
 
 using namespace std;
 
@@ -53,7 +53,7 @@ namespace MyLib {
 		MType* operator[](const int i) {
 			//Проверка на выход за границы
 			if (i < 0 || i >= size1) {
-				throw XExecption("out of band");
+				throw Exception("out of band");
 			}
 			return arr[i];
 		}
@@ -62,7 +62,7 @@ namespace MyLib {
 		const MType* operator[](const int i) const {
 			//Проверка на выход за границы
 			if (i < 0 || i >= size1) {
-				throw XExecption("out of band");
+				throw Exception("out of band");
 			}
 			return arr[i];
 		}
