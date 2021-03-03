@@ -78,7 +78,7 @@ namespace MyLib {
 		//+ Array
 		Array operator+=(const Array &A);
 		//Объект + Array 
-		template<typename AType, typename VType> friend Array<VType> operator+=(VType val, const Array<AType> &A);
+		/*template<typename AType, typename VType> friend Array<VType> operator+=(VType val, const Array<AType> &A);*/
 
 
 		//Логические операторы с массивом
@@ -229,9 +229,11 @@ namespace MyLib {
 
 	template<typename AType> template<typename VType> Array<AType> Array<AType>::operator+=(VType val) {
 
+		//Расширяем
 		this->resize(length + 1);
+		//Присваиваем последнему элементу
 		this->arr[length - 1] = val;
-
+		//Возвращаем
 		return *this;
 	}
 	template<typename AType> Array<AType> Array<AType>::operator+=(const Array &A) {
@@ -251,16 +253,16 @@ namespace MyLib {
 		return *this;
 	}
 
-	template<typename AType, typename VType> Array<VType> operator+=(VType val, const Array<AType> &A) {
-		
-		Array<VType> temp(A.length + 1);
-		temp[0] = val;
+	//template<typename AType, typename VType> Array<VType> operator+=(VType val, const Array<AType> &A) {
+	//	
+	//	Array<VType> temp(A.length + 1);
+	//	temp[0] = val;
 
-		//Соединяем с массивом A
-		for (long i = 1; i < temp.length; i++) {
-			temp.arr[i] = (VType)A.arr[i - 1];
-		}
+	//	//Соединяем с массивом A
+	//	for (long i = 1; i < temp.length; i++) {
+	//		temp.arr[i] = (VType)A.arr[i - 1];
+	//	}
 
-		return *this = temp;
-	}
+	//	return *this = temp;
+	//}
 }
