@@ -77,14 +77,20 @@ namespace MyLib {
 		template<typename VType> Array<AType> operator+=(VType val);
 		//+ Array
 		Array operator+=(const Array &A);
-		//Объект + Array 
-		/*template<typename AType, typename VType> friend Array<VType> operator+=(VType val, const Array<AType> &A);*/
+		
+		//Унарный минус
+		Array operator-();
 
+		//Операторы сравнения
+		bool operator==(const Array &A);
+		bool operator!=(const Array &A);
 
-		//Логические операторы с массивом
+		//Оператор запятая
+		Array operator,(Array &A);
 
 		//Функция сортировки
 
+		
 	};
 
 	template<typename AType> Array<AType>::Array() {
@@ -253,16 +259,45 @@ namespace MyLib {
 		return *this;
 	}
 
-	//template<typename AType, typename VType> Array<VType> operator+=(VType val, const Array<AType> &A) {
-	//	
-	//	Array<VType> temp(A.length + 1);
-	//	temp[0] = val;
+	//Функция меняет знак каждого элемента массива
+	template<typename AType> Array<AType> Array<AType>::operator-() {
+		for (int i = 0; i < length; i++) {
+			arr[i] = -arr[i];
+		}
+		return *this;
+	}
 
-	//	//Соединяем с массивом A
-	//	for (long i = 1; i < temp.length; i++) {
-	//		temp.arr[i] = (VType)A.arr[i - 1];
-	//	}
+	//Операторы сравнения
+	template<typename AType>
+	inline bool Array<AType>::operator==(const Array & A)
+	{
+		//Если длины не равны, то массивы не равны
+		if (length != A.length) {
+			return false;
+		}
 
-	//	return *this = temp;
-	//}
+		//Если есть неравные элементы, то массивы не равны
+		for (long i = 0; i < length; i++) {
+			if (arr[i] != A[i]) {
+				return false;
+			}
+		}
+
+		//Если и длины и элементы равны, то массивы равны
+		return true;
+	}
+	template<typename AType>
+	inline bool Array<AType>::operator!=(const Array & A)
+	{
+		return !(*this == A);
+	}
+
+	template<typename AType>
+	inline Array<AType> Array<AType>::operator,(Array &A)
+	{
+		Array temp = A;
+		return temp;
+	}
+	
+
 }
