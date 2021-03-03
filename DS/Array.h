@@ -169,18 +169,22 @@ namespace MyLib {
 	template<typename VType>
 	Array<AType> Array<AType>::operator+(VType val)
 	{
-		Array temp = *this;
+		//Array temp(length + 1);
+		//
+		////Прибавляем значение ко всем элементам
+		//for (long i = 0; i < temp.length - 1; i++) {
+		//	temp.arr[i] += val;
+		//}
 
-		//Прибавляем значение ко всем элементам
-		for (long i = 0; i < temp.length; i++) {
-			temp.arr[i] += val;
-		}
+		Array temp = *this;
+		temp.resize(temp.length + 1);
+		temp[temp.length - 1] = val;
 
 		return temp;
 	}
 
 	template<typename AType>
-	Array<AType> Array<AType>::operator+(const Array & A)
+	Array<AType> Array<AType>::operator+(const Array &A)
 	{
 		//Новый массив
 		Array temp(length + A.length);
@@ -208,14 +212,16 @@ namespace MyLib {
 		return temp;
 	}
 
+	//Функция объединит значение и массив
 	template<typename AType, typename VType>
 	Array<VType> operator+(VType val, const Array<AType> &A) {
 
-		Array<VType> temp(A.length);
+		Array<VType> temp(A.length + 1);
+		temp[0] = val;
 
-		//Складываем элементы массива A и значение val
-		for (long i = 0; i < temp.length; i++) {
-			temp.arr[i] = (VType)A.arr[i] + val;
+		//Соединяем с массивом A
+		for (long i = 1; i < temp.length; i++) {
+			temp.arr[i] = (VType)A.arr[i - 1];
 		}
 
 		return temp;
