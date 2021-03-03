@@ -65,13 +65,20 @@ namespace MyLib {
 		//Оператор вывода массива в потоке вывода
 		template<typename AType> friend ostream& operator<<(ostream &stream, const Array<AType> &A);
 
-		//Математические операторы с массивом
+		//Математические операторы для добавления элементов
 		//+ объект
 		template<typename VType> Array<AType> operator+(VType val);
 		//+ Array
 		Array operator+(const Array &A);
 		//Объект + Array 
 		template<typename AType, typename VType> friend Array<VType> operator+(VType val, const Array<AType> &A);
+
+		//+ объект
+		template<typename VType> Array<AType> operator+=(VType val);
+		//+ Array
+		Array operator+=(const Array &A);
+		//Объект + Array 
+		template<typename AType, typename VType> friend Array<VType> operator+=(VType val, const Array<AType> &A);
 
 
 		//Логические операторы с массивом
@@ -169,13 +176,6 @@ namespace MyLib {
 	template<typename VType>
 	Array<AType> Array<AType>::operator+(VType val)
 	{
-		//Array temp(length + 1);
-		//
-		////Прибавляем значение ко всем элементам
-		//for (long i = 0; i < temp.length - 1; i++) {
-		//	temp.arr[i] += val;
-		//}
-
 		Array temp = *this;
 		temp.resize(temp.length + 1);
 		temp[temp.length - 1] = val;
@@ -227,5 +227,40 @@ namespace MyLib {
 		return temp;
 	}
 
-	
+	template<typename AType> template<typename VType> Array<AType> Array<AType>::operator+=(VType val) {
+
+		this->resize(length + 1);
+		this->arr[length - 1] = val;
+
+		return *this;
+	}
+	template<typename AType> Array<AType> Array<AType>::operator+=(const Array &A) {
+		
+		//Старая длина
+		long l = length;
+
+		//Расширяем массив
+		this->resize(length + A.length);
+
+		//Копируем массив A в конец
+		for (long i = l, j = 0; i < this->length; i++, j++) {
+
+			this->arr[i] = A[j];
+		}
+
+		return *this;
+	}
+
+	template<typename AType, typename VType> Array<VType> operator+=(VType val, const Array<AType> &A) {
+		
+		Array<VType> temp(A.length + 1);
+		temp[0] = val;
+
+		//Соединяем с массивом A
+		for (long i = 1; i < temp.length; i++) {
+			temp.arr[i] = (VType)A.arr[i - 1];
+		}
+
+		return *this = temp;
+	}
 }
