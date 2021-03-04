@@ -101,6 +101,9 @@ namespace MyLib {
 		static bool AscOrd(AType a, AType b) {
 			return a > b;
 		}
+		static bool DescOrd(AType a, AType b) {
+			return a < b;
+		}
 		/*Основную работу будет выполнять функция
 		сортировки слиянием, но на небольших размерах массива
 		будет работать функция сортировки вставками*/
