@@ -19,6 +19,9 @@ namespace MyLib {
 			}
 		}
 
+		//Функция для сортировки вставками
+		void insertion_sort(AType *arr, long left, long right, bool(*CompareFunc)(AType a, AType b) = AscOrd);
+
 	public:
 
 		//Конструкторы
@@ -88,8 +91,17 @@ namespace MyLib {
 		//Оператор запятая
 		Array operator,(Array &A);
 
-		//Функция сортировки
-
+		//Функции сортировки
+		//Функция возвращающая true, если a > b
+		static bool AscOrd(AType a, AType b) {
+			return a > b;
+		}
+		/*Основную работу будет выполнять функция
+		сортировки слиянием, но на небольших размерах массива
+		будет работать функция сортировки вставками*/
+		void InsertSort(bool(*CompareFunc)(AType a, AType b) = AscOrd);
+		
+		
 		
 	};
 
@@ -295,9 +307,58 @@ namespace MyLib {
 	template<typename AType>
 	inline Array<AType> Array<AType>::operator,(Array &A)
 	{
-		Array temp = A;
-		return temp;
+		return A;
 	}
-	
+
+	//Функция сортировки вставками
+	template<typename AType>
+	void Array<AType>::InsertSort(bool(*CompareFunc)(AType a, AType b))
+	{
+		insertion_sort(arr, 0, length - 1, CompareFunc);
+
+		//AType key;
+		//long j;
+
+		//for (long i = 1; i < length; i++) {
+		//	
+		//	//Запомнили элемент
+		//	key = arr[i];
+
+		//	//Установили счетчик
+		//	j = i - 1;
+
+		//	//Начинаем смещение элементов слева направо
+		//	while(j >= 0 && CompareFunc(arr[j], key)) {	
+		//		//Если элемент key должен быть левее/правее arr[j]
+		//		arr[j + 1] = arr[j];
+		//		j--;
+		//	}
+
+		//	arr[j+1] = key;
+		//}
+	}
+	template<typename AType> void Array<AType>::insertion_sort(AType *arr, long left, long right, bool(*CompareFunc)(AType a, AType b)) {
+
+		AType key;
+		long j;
+
+		for (long i = left + 1; i <= right; i++) {
+
+			//Запомнили элемент
+			key = arr[i];
+
+			//Установили счетчик
+			j = i - 1;
+
+			//Начинаем смещение элементов слева направо
+			while (j >= left && CompareFunc(arr[j], key)) {
+				//Если элемент key должен быть левее/правее arr[j]
+				arr[j + 1] = arr[j];
+				j--;
+			}
+
+			arr[j + 1] = key;
+		}
+	}
 
 }
