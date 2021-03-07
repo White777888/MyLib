@@ -186,18 +186,18 @@ namespace MyLib {
 
 	template<typename AType> ostream& operator<<(ostream &stream, const Array<AType> &A) {
 
-		cout << '[';
+		stream << '[';
 		
 		for (int i = 0; i < A.length; i++) {
 
-			cout << A[i] 
+			stream << A[i] 
 				/*≈сли выводитс€ последний элемент,
 				то ничего не выводим, в обр. случае
 				выводим зап€тую и пробел*/
 				<< ((i == A.length - 1)? "" : ", ");
 		}
 
-		cout << "]\n";
+		stream << "]\n";
 
 		return stream;
 
