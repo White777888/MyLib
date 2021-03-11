@@ -72,6 +72,8 @@ namespace MyLib {
 
 		//Оператор вывода массива в потоке вывода
 		template<typename AType> friend ostream& operator<<(ostream &stream, const Array<AType> &A);
+		//Оператор ввода массива в потоке вывода
+		template<typename AType> friend istream& operator>>(istream &stream, const Array<AType> &A);
 
 		//Математические операторы для добавления элементов
 		//+ объект
@@ -95,6 +97,10 @@ namespace MyLib {
 
 		//Оператор запятая
 		Array operator,(Array &A);
+
+
+		//Оператор приведения типа
+		template<typename ToType> operator Array<ToType>();
 
 		//Функции сортировки
 		//Функция возвращающая true, если a > b
@@ -203,6 +209,16 @@ namespace MyLib {
 
 	}
 
+	template<typename AType> istream& operator>>(istream &stream, const Array<AType>& A)
+	{
+		//Проходим массив и вводим каждый элемент
+		for (long i = 0; i < A.length; i++) {
+			stream >> A[i];
+		}
+
+		return stream;
+	}
+
 	template<typename AType>
 	template<typename VType>
 	Array<AType> Array<AType>::operator+(VType val)
@@ -267,6 +283,23 @@ namespace MyLib {
 		//Возвращаем
 		return *this;
 	}
+
+	
+	template<typename AType>
+	template<typename ToType>
+	Array<AType>::operator Array<ToType>()
+	{
+		//Новый массив приводимого типа
+		Array<ToType> Res(this->length);
+
+		//Копируем элементы с приведением типа
+		for (long i = 0; i < this->length; i++) {
+			Res[i] = (ToType)this->arr[i];
+		}
+
+		return Res;
+	}
+
 	template<typename AType> Array<AType> Array<AType>::operator+=(const Array &A) {
 		
 		//Старая длина
