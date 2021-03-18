@@ -1,4 +1,7 @@
 #pragma once
+#ifndef ARRAY_H
+#define ARRAY_H
+
 #include <iostream>
 #include <ostream>
 #include "Exception.h"
@@ -97,7 +100,6 @@ namespace MyLib {
 
 		//Оператор запятая
 		Array operator,(Array &A);
-
 
 		//Оператор приведения типа
 		template<typename ToType> operator Array<ToType>();
@@ -219,9 +221,7 @@ namespace MyLib {
 		return stream;
 	}
 
-	template<typename AType>
-	template<typename VType>
-	Array<AType> Array<AType>::operator+(VType val)
+	template<typename AType> template<typename VType> Array<AType> Array<AType>::operator+(VType val)
 	{
 		Array temp = *this;
 		temp.resize(temp.length + 1);
@@ -230,8 +230,7 @@ namespace MyLib {
 		return temp;
 	}
 
-	template<typename AType>
-	Array<AType> Array<AType>::operator+(const Array &A)
+	template<typename AType> Array<AType> Array<AType>::operator+(const Array &A)
 	{
 		//Новый массив
 		Array temp(length + A.length);
@@ -260,8 +259,7 @@ namespace MyLib {
 	}
 
 	//Функция объединит значение и массив
-	template<typename AType, typename VType>
-	Array<VType> operator+(VType val, const Array<AType> &A) {
+	template<typename AType, typename VType> Array<VType> operator+(VType val, const Array<AType> &A) {
 
 		Array<VType> temp(A.length + 1);
 		temp[0] = val;
@@ -285,9 +283,7 @@ namespace MyLib {
 	}
 
 	
-	template<typename AType>
-	template<typename ToType>
-	Array<AType>::operator Array<ToType>()
+	template<typename AType> template<typename ToType> Array<AType>::operator Array<ToType>()
 	{
 		//Новый массив приводимого типа
 		Array<ToType> Res(this->length);
@@ -495,3 +491,5 @@ namespace MyLib {
 	}
 
 }
+
+#endif

@@ -1,4 +1,8 @@
 #pragma once
+#ifndef MATRIX_H
+#define MATRIX_H
+
+
 #include <iostream>
 #include <cmath>
 #include <string>
@@ -6,6 +10,7 @@
 #include <mutex>
 
 #include "Exception.h"
+#include "Array.h"
 
 using namespace std;
 
@@ -647,3 +652,4 @@ namespace MyLib {
 
 	template<class MType> std::once_flag Matrix<MType>::initRand;
 }
+#endif // !MATRIX_H

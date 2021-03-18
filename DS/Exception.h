@@ -1,4 +1,7 @@
 #pragma once
+
+#ifndef EXCEPTION_H
+#define EXCEPTION_H
 #include <string>
 
 using namespace std;
@@ -19,3 +22,4 @@ namespace MyLib {
 		}
 	};
 }
+#endif
